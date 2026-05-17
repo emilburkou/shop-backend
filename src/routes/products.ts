@@ -34,7 +34,7 @@ export function createProductRouter(service: ProductService): Router {
     res.json(result);
   });
 
-  router.get('/:id', async (req: Request, res: Response) => {
+  router.get('/:id', async (req: Request<{ id: string }>, res: Response) => {
     const product = await service.getProductById(req.params.id);
     if (!product) {
       res.status(404).json({ error: 'Product not found' });
