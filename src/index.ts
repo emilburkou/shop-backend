@@ -2,12 +2,14 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { initSchema } from './db/schema';
+import { seedProducts } from './db/seed';
 import { SqliteProductRepository } from './repositories/SqliteProductRepository';
 import { ProductService } from './services/productService';
 import { createProductRouter } from './routes/products';
 import { createCategoryRouter } from './routes/categories';
 
 initSchema();
+seedProducts();
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;

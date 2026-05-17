@@ -1,15 +1,5 @@
-import 'dotenv/config';
 import { v4 as uuidv4 } from 'uuid';
 import db from './database';
-import { initSchema } from './schema';
-
-initSchema();
-
-const existing = db.prepare('SELECT COUNT(*) as count FROM products').get() as { count: number };
-if (existing.count > 0) {
-  console.log(`Database already has ${existing.count} products. Skipping seed.`);
-  process.exit(0);
-}
 
 interface SeedProduct {
   title: string;
@@ -1013,5 +1003,12 @@ const insertMany = db.transaction((items: SeedProduct[]) => {
   }
 });
 
-insertMany(products);
-console.log(`Seeded ${products.length} products into the database`);
+export function seedProducts(): void {
+  const existing = db.prepare('SELECT COUNT(*) as count FROM products').get() as { count: number };
+  if (existing.count > 0) {
+    console.log(`Database already has ${existing.count} products. Skipping seed.`);
+    return;
+  }
+  insertMany(products);
+  console.log(`✓ Seeded ${products.length} products into the database`);
+}
